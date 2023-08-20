@@ -1,0 +1,54 @@
+.container{
+    margin: auto;
+
+    border: 20px solid #93CAED;
+    width: 50%;
+    min-height: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    text-overflow: clip;
+}
+
+.todoItems{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 5px;
+    align-items: start;
+    flex-direction: column;
+
+}
+
+/* .todoItem{
+    display: flex;
+    border: 2px solid;
+    border-radius: 6px;
+    margin: 5px;
+    padding-left: 5px;
+    inline-size: 40%;
+    flex-wrap: break-word;
+    
+} */
+
+.todoItem {
+    display: flex; 
+    align-items: center;
+    border: 2px solid;
+    border-radius: 6px;
+    margin: 5px;
+    padding: 5px;
+    width: 40%;
+    flex-wrap: wrap;
+}
+
+.inputTodo{
+    margin-right: 10px; 
+}
+
+.todoText {
+    flex: 1;
+    word-wrap: break-word;
+}
+
+.todoItem[type=checkbox]:checked{
+    text-decoration: line-through;
+}
