@@ -25,7 +25,9 @@ export const todoStore = create<TodosState>((set, get) => ({
             id: Date.now(),
             title
         }
-        set({todos: [newTask].concat(todos)})
+        if(title){
+            set({todos: [newTask].concat(todos)})
+        }
     },
     fetchTodos: async (): Promise<any> => {
         const result = await fetch('https://jsonplaceholder.typicode.com/todos')
