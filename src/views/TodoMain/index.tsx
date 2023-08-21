@@ -2,10 +2,7 @@ import React, { useEffect } from 'react'
 import { todoStore } from '../../store'
 import AddTaskComponent from '../../components/AddTaskInputComponent'
 import {Divider} from '../../components/shared-components/Divider'
-import styles from './index.module.css'
 import CheckboxInput from '../../components/CheckboxInput'
-
-const {container, todoItems, todoItem, todoText, inputTodo} = styles
 
 interface TodoContainerProps {
   mainTitle: string
@@ -28,23 +25,27 @@ const TodoContainer: React.FC<TodoContainerProps> = ({mainTitle}) => {
   return (
     <div>
       
-      <h1 className='mainTitle'>{mainTitle}</h1>
+      <h1 className='font-bold text-2xl mb-10'>{mainTitle}</h1>
       <Divider />
-      <div className={container}>
+      <div className="m-auto border-[20px] border-cyan-500 w-1/2 min-h-[200px] p-3 rounded-lg overflow-clip">
         <AddTaskComponent addTask={addTodo}/>
 
-        {isLoading ? "Loading..." : <div className={todoItems}>
+        {isLoading ? "Loading..." : <div className="flex justify-between pl-1 items-start flex-col">
+
           {todos.map(todo => (
             
-            <div className={todoItem} key={todo.id}>
-              <div className={inputTodo}>
+            <div className="flex items-center text-start border rounded m-2 p-2 w-2/4 flex-wrap" key={todo.id}>
+
+              <div className="mr-3">
                 <CheckboxInput />
               </div>
-              <div className={todoText}>
+              <div className="flex-1 break-all">
                 {todo.title}
               </div>
               
-              <button onClick={() => removeTodo(todo.id)}>Remove</button>
+              <button 
+              className='transition ease-in-out hover:-translate-y-px border rounded ml-2 bg-emerald-50'
+              onClick={() => removeTodo(todo.id)}>Remove</button>
             </div>
           ))}
         </div>}

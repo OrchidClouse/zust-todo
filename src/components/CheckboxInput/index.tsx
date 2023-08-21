@@ -2,8 +2,11 @@ import React from 'react'
 
 const CheckboxInput: React.FC = () => {
   return (
-    
-    <input type='checkbox'/>
+    <>
+      <label htmlFor="completed">
+        <input type='checkbox' name='completed' />
+      </label>
+    </>
   )
 }
 
