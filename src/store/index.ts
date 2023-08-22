@@ -15,7 +15,7 @@ interface TodosState {
     removeTodo: (id: number) => void
     
 } 
- 
+
 export const todoStore = create<TodosState>((set, get) => ({
     todos: [],
     isLoading: true,
@@ -26,20 +26,27 @@ export const todoStore = create<TodosState>((set, get) => ({
             title
         }
         if(title){
-            set({todos: [newTask].concat(todos)})
+            const updatedTodos = [newTask].concat(todos);
+            set({todos: updatedTodos})
+            localStorage.setItem('todos', JSON.stringify(updatedTodos));
         }
     },
     fetchTodos: async (): Promise<any> => {
-        const result = await fetch('https://jsonplaceholder.typicode.com/todos')
-        const json = await result.json() as ITodo[];
-        set({todos: json})
+        const storedTodos = localStorage.getItem('todos');
+        if (storedTodos) {
+            set({todos: JSON.parse(storedTodos)});
+        } else {
+            const result = await fetch('https://jsonplaceholder.typicode.com/todos')
+            const json = await result.json() as ITodo[];
+            set({todos: json})
+            localStorage.setItem('todos', JSON.stringify(json));
+        }
         set({isLoading: false})
     },
     removeTodo: (id: number) => {
         const {todos} = get()
-        set({todos: todos.filter(todo => todo.id !== id)})
-        
+        const updatedTodos = todos.filter(todo => todo.id !== id);
+        set({todos: updatedTodos})
+        localStorage.setItem('todos', JSON.stringify(updatedTodos));
     }
-
-
 }))
