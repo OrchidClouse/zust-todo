@@ -55,5 +55,6 @@ export const todoStore = create<TodosState>((set, get) => ({
         const updatedTodos = todos.map(todo => todo.id === id ? {...todo, completed: !todo.completed} : todo);
         set({todos: updatedTodos})
         localStorage.setItem('completed', JSON.stringify(updatedTodos));
+
     }
 }))

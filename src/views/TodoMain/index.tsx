@@ -46,7 +46,7 @@ const TodoContainer: React.FC<TodoContainerProps> = ({mainTitle}) => {
               </div>
               
               <button 
-              className='transition ease-in-out hover:-translate-y-px border rounded ml-2 bg-emerald-50'
+              className='transition ease-in-out hover:-translate-y-px border rounded ml-2bg-emerald-50'
               onClick={() => removeTodo(todo.id)}>Remove</button>
             </div>
           ))}
