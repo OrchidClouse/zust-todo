@@ -5,6 +5,7 @@ import {create} from 'zustand'
 export interface ITodo {
     id: number;
     title: string;
+    completed?: boolean;
 }
 
 interface TodosState {
@@ -12,8 +13,8 @@ interface TodosState {
     isLoading: boolean;
     addTodo: (title: string) => void;
     fetchTodos: () => Promise<ITodo[]>;
-    removeTodo: (id: number) => void
-    
+    removeTodo: (id: number) => void;
+    completedTodo: (id: number) => void;
 } 
 
 export const todoStore = create<TodosState>((set, get) => ({
@@ -48,5 +49,11 @@ export const todoStore = create<TodosState>((set, get) => ({
         const updatedTodos = todos.filter(todo => todo.id !== id);
         set({todos: updatedTodos})
         localStorage.setItem('todos', JSON.stringify(updatedTodos));
+    },
+    completedTodo: (id: number) => {
+        const {todos} = get()
+        const updatedTodos = todos.map(todo => todo.id === id ? {...todo, completed: !todo.completed} : todo);
+        set({todos: updatedTodos})
+        localStorage.setItem('completed', JSON.stringify(updatedTodos));
     }
 }))

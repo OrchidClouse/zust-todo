@@ -10,12 +10,14 @@ interface TodoContainerProps {
 
 const TodoContainer: React.FC<TodoContainerProps> = ({mainTitle}) => {
   
-  const [todos, addTodo, fetchTodos, isLoading, removeTodo] = todoStore(state => [
+  const [todos, addTodo, fetchTodos, isLoading, removeTodo, completedTodo] = todoStore(state => [
     state.todos,
     state.addTodo,
     state.fetchTodos,
     state.isLoading,
-    state.removeTodo
+    state.removeTodo,
+    state.completedTodo
+
   ])
 
   useEffect(() => {
@@ -37,9 +39,9 @@ const TodoContainer: React.FC<TodoContainerProps> = ({mainTitle}) => {
             <div className="flex items-center text-start border rounded m-2 p-2 w-2/4 flex-wrap" key={todo.id}>
 
               <div className="mr-3">
-                <CheckboxInput />
+                <CheckboxInput onChange={() => completedTodo(todo.id)} checked={todo.completed}/>
               </div>
-              <div className="flex-1 break-all">
+              <div className="flex-1 break-all" style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
                 {todo.title}
               </div>
               
