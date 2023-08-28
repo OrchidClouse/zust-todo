@@ -1,12 +1,12 @@
 import React, {useState, useCallback} from 'react'
 
 
-interface AddTaskComponentProps {
+interface IAddTaskComponentProps {
   addTask: (title: string) => void 
 }
 
 
-const AddTaskComponent: React.FC<AddTaskComponentProps> = ({addTask}) => {
+export const AddTaskComponent: React.FC<IAddTaskComponentProps> = ({addTask}) => {
   
   const [inputValue, setInputValue] = useState('')
 
@@ -14,7 +14,7 @@ const AddTaskComponent: React.FC<AddTaskComponentProps> = ({addTask}) => {
     addTask(inputValue)
     setInputValue('')
 
-  }, [inputValue])
+  }, [inputValue, addTask])
 
   return (
     <div className='flex'>
@@ -38,5 +38,3 @@ const AddTaskComponent: React.FC<AddTaskComponentProps> = ({addTask}) => {
     </div>
   )
 }
-
-export default AddTaskComponent

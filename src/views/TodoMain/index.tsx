@@ -1,24 +1,14 @@
 import React, { useEffect } from 'react'
 import { todoStore } from '../../store'
-import AddTaskComponent from '../../components/AddTaskInputComponent'
-import {Divider} from '../../components/shared-components/Divider'
-import CheckboxInput from '../../components/CheckboxInput'
+import { Divider, CheckboxInput, AddTaskComponent } from '../../components'
 
-interface TodoContainerProps {
+interface ITodoContainerProps {
   mainTitle: string
 }
 
-const TodoContainer: React.FC<TodoContainerProps> = ({mainTitle}) => {
+const TodoContainer: React.FC<ITodoContainerProps> = ({mainTitle}) => {
   
-  const [todos, addTodo, fetchTodos, isLoading, removeTodo, completedTodo] = todoStore(state => [
-    state.todos,
-    state.addTodo,
-    state.fetchTodos,
-    state.isLoading,
-    state.removeTodo,
-    state.completedTodo
-
-  ])
+  const {todos, addTodo, fetchTodos, isLoading, removeTodo, completedTodo} = todoStore(state => state)
 
   useEffect(() => {
     fetchTodos()
@@ -34,10 +24,9 @@ const TodoContainer: React.FC<TodoContainerProps> = ({mainTitle}) => {
 
         {isLoading ? "Loading..." : <div className="flex justify-between pl-1 items-start flex-col">
 
-          {todos.map(todo => (
+          {Array.isArray(todos) && todos.length > 0 && todos.map(todo => (
             
             <div className="flex items-center text-start border rounded m-2 p-2 w-2/4 flex-wrap" key={todo.id}>
-
               <div className="mr-3">
                 <CheckboxInput onChange={() => completedTodo(todo.id)} checked={todo.completed}/>
               </div>

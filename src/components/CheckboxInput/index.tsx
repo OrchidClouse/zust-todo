@@ -1,16 +1,10 @@
-interface CheckboxInputProps {
+interface ICheckboxInputProps {
   onChange: () => void;
   checked: boolean | undefined;
 }
 
-const CheckboxInput: React.FC<CheckboxInputProps> = ({ onChange, checked }) => {
-  return (
-      <>
-          <label htmlFor="completed">
-              <input type='checkbox' name='completed' onChange={onChange} checked={checked} />
-          </label>
-      </>
-  )
-}
-
-export default CheckboxInput
+export const CheckboxInput: React.FC<ICheckboxInputProps> = ({ onChange, checked }) => (
+  <label htmlFor="completed">
+    <input type='checkbox' name='completed' onChange={onChange} checked={checked} />
+  </label>
+)

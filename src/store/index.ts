@@ -8,7 +8,7 @@ export interface ITodo {
     completed?: boolean;
 }
 
-interface TodosState {
+interface ITodosState {
     todos: ITodo[];
     isLoading: boolean;
     addTodo: (title: string) => void;
@@ -17,7 +17,7 @@ interface TodosState {
     completedTodo: (id: number) => void;
 } 
 
-export const todoStore = create<TodosState>((set, get) => ({
+export const todoStore = create<ITodosState>((set, get) => ({
     todos: [],
     isLoading: true,
     addTodo: (title: string) => {
