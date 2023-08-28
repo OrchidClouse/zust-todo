@@ -22,11 +22,7 @@ export const AddTaskComponent: React.FC<IAddTaskComponentProps> = ({addTask}) =>
             className=" h-9 w-1/3 border rounded-lg pl-3 font-bold"
             type='text'
             onChange={(event) => {setInputValue(event.target.value)}}
-            onKeyDown={(event) => {
-              if(event.key === 'Enter'){
-                addNewTask()
-              }
-            }}
+            onKeyDown={(event) => event.key === 'Enter' && addNewTask()}
             value={inputValue}
             placeholder='Write...'
         />

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { todoStore } from '../../store'
 import { Divider, CheckboxInput, AddTaskComponent } from '../../components'
 
@@ -7,12 +7,27 @@ interface ITodoContainerProps {
 }
 
 const TodoContainer: React.FC<ITodoContainerProps> = ({mainTitle}) => {
-  
-  const {todos, addTodo, fetchTodos, isLoading, removeTodo, completedTodo} = todoStore(state => state)
+  const [editingTodo, setEditingTodo] = useState<null | number>(null);
+  const {todos, addTodo, fetchTodos, isLoading, removeTodo, completedTodo, updateTodo} = todoStore(state => state)
 
   useEffect(() => {
     fetchTodos()
   }, [fetchTodos])
+
+  const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      const form = event.currentTarget.form;
+      if (form) {
+        const index = Array.prototype.indexOf.call(form, event.currentTarget);
+        const nextElement = form.elements[index + 1] as HTMLInputElement;
+        if (nextElement) {
+          nextElement.focus();
+        }
+      }
+      event.preventDefault();
+      setEditingTodo(null);
+    }
+  }
 
   return (
     <div>
@@ -26,16 +41,27 @@ const TodoContainer: React.FC<ITodoContainerProps> = ({mainTitle}) => {
 
           {Array.isArray(todos) && todos.length > 0 && todos.map(todo => (
             
-            <div className="flex items-center text-start border rounded m-2 p-2 w-2/4 flex-wrap" key={todo.id}>
+            <div className="flex items-center text-center border shadow rounded m-2 p-2 w-2/4 flex-wrap" key={todo.id}>
               <div className="mr-3">
-                <CheckboxInput onChange={() => completedTodo(todo.id)} checked={todo.completed}/>
+              <CheckboxInput onChange={(e) => {e.stopPropagation(); completedTodo(todo.id)}} checked={todo.completed} todo={todo}/>
               </div>
-              <div className="flex-1 break-all" style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-                {todo.title}
-              </div>
-              
+              {editingTodo === todo.id ? (
+                <input
+                  className="flex-1 break-all p-2"
+                  type="text"
+                  value={todo.title}
+                  onChange={(e) => updateTodo(todo.id, e.target.value)}
+                  onBlur={() => setEditingTodo(null)}
+                  onKeyDown={handleEnter}
+                  autoFocus
+                />
+              ) : (
+                <div className="flex-1 break-all p-2" style={{ textDecoration: todo.completed ? 'line-through' : 'none' }} onClick={() => setEditingTodo(todo.id)}>
+                  {todo.title}
+                </div>
+              )}
               <button 
-              className='transition ease-in-out hover:-translate-y-px border rounded ml-2bg-emerald-50'
+              className='transition ease-in-out hover:-translate-y-1 border rounded ml-2 bg-red-500 text-white hover:bg-red-700'
               onClick={() => removeTodo(todo.id)}>Remove</button>
             </div>
           ))}
