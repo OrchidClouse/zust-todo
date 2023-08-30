@@ -1,15 +1,9 @@
+import ContainerComponent from './views/TodoMain';
 
-import './App.css';
-import TodoContainer from './views/TodoMain';
-
-function App() {
-
-  return (
-    <div className="App">
-      <TodoContainer mainTitle='Todo App'/>
-    </div>
-    
-    );
-}
+const App = () => (
+  <>
+    <ContainerComponent mainTitle='Todo App'/>
+  </>
+)
 
 export default App;

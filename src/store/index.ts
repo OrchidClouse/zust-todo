@@ -18,7 +18,7 @@ interface ITodosState {
 
 export const todoStore = create<ITodosState>((set, get) => ({
   todos: [],
-  isLoading: true,
+  isLoading: false,
   addTodo: (title: string) => {
     const { todos } = get();
     const newTask = {
@@ -34,6 +34,7 @@ export const todoStore = create<ITodosState>((set, get) => ({
   },
   fetchTodos: async (): Promise<any> => {
     const storedTodos = localStorage.getItem('todos');
+    set({isLoading: true})
     if (storedTodos) {
       set({ todos: JSON.parse(storedTodos) });
     } else {
@@ -54,7 +55,7 @@ export const todoStore = create<ITodosState>((set, get) => ({
     const { todos } = get();
     const updatedTodos = todos.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo);
     set({ todos: updatedTodos });
-    localStorage.setItem('completed', JSON.stringify(updatedTodos));
+    localStorage.setItem('todos', JSON.stringify(updatedTodos));
   },
   updateTodo: (id, newTitle) => {
     const { todos } = get();
@@ -64,6 +65,7 @@ export const todoStore = create<ITodosState>((set, get) => ({
       }
       return todo;
     });
+    localStorage.setItem('todos', JSON.stringify(updatedTodos));
     set({ todos: updatedTodos });
   },
 }));
