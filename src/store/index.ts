@@ -14,6 +14,7 @@ interface ITodosState {
   removeTodo: (id: number) => void;
   completedTodo: (id: number) => void;
   updateTodo: (id: number, newTitle: string) => void;
+  onDragEnd: (result: any) => void
 }
 
 export const todoStore = create<ITodosState>((set, get) => ({
@@ -43,29 +44,42 @@ export const todoStore = create<ITodosState>((set, get) => ({
       set({ todos: json });
       localStorage.setItem('todos', JSON.stringify(json));
     }
+
     set({ isLoading: false });
   },
-  removeTodo: (id: number) => {
-    const { todos } = get();
-    const updatedTodos = todos.filter(todo => todo.id !== id);
+  removeTodo: (id) => {
+    const updatedTodos = get().todos.filter(todo => todo.id !== id);
+
     set({ todos: updatedTodos });
     localStorage.setItem('todos', JSON.stringify(updatedTodos));
   },
-  completedTodo: (id: number) => {
-    const { todos } = get();
-    const updatedTodos = todos.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo);
+  completedTodo: (id) => {
+    const updatedTodos = get().todos.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo);
+
     set({ todos: updatedTodos });
     localStorage.setItem('todos', JSON.stringify(updatedTodos));
   },
   updateTodo: (id, newTitle) => {
-    const { todos } = get();
-    const updatedTodos = todos.map(todo => {
+    const updatedTodos = get().todos.map(todo => {
       if (todo.id === id) {
         return { ...todo, title: newTitle };
       }
       return todo;
     });
+
     localStorage.setItem('todos', JSON.stringify(updatedTodos));
     set({ todos: updatedTodos });
   },
+  onDragEnd: (result) => {
+    const {todos} = get()
+    if (!result.destination) {
+      return;
+    }
+
+    const items = Array.from(todos);
+    const [removed] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, removed);
+
+    set({ todos: items });
+  }
 }));
