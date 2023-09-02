@@ -2,14 +2,12 @@ import { ITodo } from "store";
 import { todoStore } from '../../store';
 import { CheckboxInput } from 'components';
 import { useState } from "react";
-import { Draggable } from "react-beautiful-dnd";
 
 interface ITodoItemProps {
   todo: ITodo;
-  index: number;
 }
 
-export const TodoItem: React.FC<ITodoItemProps> = ({ todo, index }) => {
+export const TodoItem: React.FC<ITodoItemProps> = ({ todo}) => {
   const { completedTodo, updateTodo, removeTodo } = todoStore(store => store);
   const [editingTodo, setEditingTodo] = useState<null | number>(null);
 
@@ -32,13 +30,6 @@ export const TodoItem: React.FC<ITodoItemProps> = ({ todo, index }) => {
 
   return (
 	<>
-	<Draggable key={todo.id} draggableId={todo.id.toString()} index={index}>
-	{(provided) => (
-    <div
-      ref={provided.innerRef}
-      {...provided.draggableProps}
-      {...provided.dragHandleProps}
-    >
 		<div
 		className="flex items-center text-center border shadow rounded m-2 p-2 max-w-lg w-11/12 flex-wrap"
 		key={todo.id}
@@ -68,9 +59,6 @@ export const TodoItem: React.FC<ITodoItemProps> = ({ todo, index }) => {
 			Remove
 		</button>
 		</div>
-		</div>
-  )}
-		</Draggable>
 	</>
   );
 };

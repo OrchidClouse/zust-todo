@@ -10,11 +10,10 @@ interface ITodosState {
   todos: ITodo[];
   isLoading: boolean;
   addTodo: (title: string) => void;
-  fetchTodos: () => Promise<ITodo[]>;
+  fetchTodos: () => void;
   removeTodo: (id: number) => void;
   completedTodo: (id: number) => void;
   updateTodo: (id: number, newTitle: string) => void;
-  onDragEnd: (result: any) => void
 }
 
 export const todoStore = create<ITodosState>((set, get) => ({
@@ -33,19 +32,23 @@ export const todoStore = create<ITodosState>((set, get) => ({
       localStorage.setItem('todos', JSON.stringify(updatedTodos));
     }
   },
-  fetchTodos: async (): Promise<any> => {
-    const storedTodos = localStorage.getItem('todos');
-    set({isLoading: true})
-    if (storedTodos) {
-      set({ todos: JSON.parse(storedTodos) });
-    } else {
-      const result = await fetch('https://jsonplaceholder.typicode.com/todos');
-      const json = await result.json() as ITodo[];
-      set({ todos: json });
-      localStorage.setItem('todos', JSON.stringify(json));
+  fetchTodos: async () => {
+    set({ isLoading: true });
+  
+    const storedTodos = JSON.parse(localStorage.getItem('todos') || '[]');
+  
+    if (storedTodos.length > 0) {
+      set({ todos: storedTodos, isLoading: false });
+      return storedTodos;
     }
-
-    set({ isLoading: false });
+  
+    const response = await fetch('https://jsonplaceholder.typicode.com/todos');
+    const todos = await response.json();
+    localStorage.setItem('todos', JSON.stringify(todos));
+    
+    set({ todos: todos, isLoading: false });
+    
+    return todos;
   },
   removeTodo: (id) => {
     const updatedTodos = get().todos.filter(todo => todo.id !== id);
@@ -69,17 +72,5 @@ export const todoStore = create<ITodosState>((set, get) => ({
 
     localStorage.setItem('todos', JSON.stringify(updatedTodos));
     set({ todos: updatedTodos });
-  },
-  onDragEnd: (result) => {
-    const {todos} = get()
-    if (!result.destination) {
-      return;
-    }
-
-    const items = Array.from(todos);
-    const [removed] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, removed);
-
-    set({ todos: items });
   }
 }));

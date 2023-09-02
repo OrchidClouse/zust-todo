@@ -1,24 +1,21 @@
 import React, { useEffect} from 'react'
 import { todoStore } from '../../store'
 import { Divider, AddTaskComponent, TodoWrapper } from '../../components'
-import { DragDropContext } from 'react-beautiful-dnd';
-
-
 
 interface IContainerComponentProps {
   mainTitle: string
 }
 
 const ContainerComponent: React.FC<IContainerComponentProps> = ({mainTitle}) => {
-  const {todos, fetchTodos, addTodo, isLoading, onDragEnd} = todoStore(state => state)
+  const {todos, fetchTodos, addTodo, isLoading} = todoStore(state => state)
 
   useEffect(() => {
     fetchTodos()
   }, [fetchTodos])
 
+
   const completedTodos = todos.filter(todo => todo.completed);
   const incompleteTodos = todos.filter(todo => !todo.completed);
-  
 
   return (
     <div>
@@ -28,10 +25,8 @@ const ContainerComponent: React.FC<IContainerComponentProps> = ({mainTitle}) => 
         <AddTaskComponent addTask={addTodo}/>
         {isLoading ? "Loading..." : 
           <div className="flex justify-between">
-            <DragDropContext onDragEnd={onDragEnd}>
               <TodoWrapper todos={incompleteTodos} todoType={"incomplete"} />
               <TodoWrapper todos={completedTodos} todoType={"complete"} />
-            </DragDropContext>
           </div>
         }
       </div>
