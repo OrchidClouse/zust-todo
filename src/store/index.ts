@@ -25,7 +25,7 @@ export const todoStore = create<ITodosState>((set, get) => ({
       id: Date.now(),
       title,
       completed: false
-    };
+    }
     if (title) {
       const updatedTodos = [newTask, ...todos];
       set({ todos: updatedTodos });
@@ -34,13 +34,12 @@ export const todoStore = create<ITodosState>((set, get) => ({
   },
   fetchTodos: async () => {
     set({ isLoading: true });
+
     const storedTodos = JSON.parse(localStorage.getItem('todos') || '[]');
-  
     if (storedTodos.length > 0) {
       set({ todos: storedTodos, isLoading: false });
       return storedTodos;
     }
-  
     const response = await fetch('https://jsonplaceholder.typicode.com/todos');
     const todos = await response.json();
 

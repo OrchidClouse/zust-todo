@@ -20,11 +20,10 @@ export const TodoItem: React.FC<ITodoItemProps> = ({ todo}) => {
 	};
 
   return (
-	<>
-		<div
+	<div
 		className="flex items-center text-center border shadow rounded m-2 p-2 max-w-lg w-11/12 flex-wrap"
 		key={todo.id}
-		>
+	>
 		<div className="mr-3">
 			<CheckboxInput onChange={() => { completedTodo(todo.id) }} checked={todo.completed} todo={todo} />
 		</div>
@@ -49,7 +48,6 @@ export const TodoItem: React.FC<ITodoItemProps> = ({ todo}) => {
 		>
 			Remove
 		</button>
-		</div>
-	</>
+	</div>
   );
 };

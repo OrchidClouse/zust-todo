@@ -13,8 +13,8 @@ export const TodoWrapper: React.FC<ITodoWrapper> = ({todos, todoStatus}) => {
 	return(
 		<div className="m-2">
 			<div className=" ml-5">
-			<h2 className="font-bold text-xl">{todoStatus === 'complete' ? "Complete" : "Incomplete"} Tasks</h2>
-			<h4>Total: {todos.length}</h4>
+				<h2 className="font-bold text-xl">{todoStatus === 'complete' ? "Complete" : "Incomplete"} Tasks</h2>
+				<h4>Total: {todos.length}</h4>
 			</div>
 			<div className='flex flex-col items-center border rounded'>
 				<TodoContainer todos={todos}/>
