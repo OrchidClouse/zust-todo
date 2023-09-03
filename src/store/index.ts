@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { addToLocalStorage } from './utils';
 
 export interface ITodo {
   id: number;
@@ -29,7 +30,7 @@ export const todoStore = create<ITodosState>((set, get) => ({
     if (title) {
       const updatedTodos = [newTask, ...todos];
       set({ todos: updatedTodos });
-      localStorage.setItem('todos', JSON.stringify(updatedTodos));
+      addToLocalStorage('todos', updatedTodos)
     }
   },
   fetchTodos: async () => {
@@ -43,20 +44,20 @@ export const todoStore = create<ITodosState>((set, get) => ({
     const response = await fetch('https://jsonplaceholder.typicode.com/todos');
     const todos = await response.json();
 
-    localStorage.setItem('todos', JSON.stringify(todos));
+    addToLocalStorage('todos', todos)
     set({ todos: todos, isLoading: false });
   },
   removeTodo: (id) => {
     const updatedTodos = get().todos.filter(todo => todo.id !== id);
 
     set({ todos: updatedTodos });
-    localStorage.setItem('todos', JSON.stringify(updatedTodos));
+    addToLocalStorage('todos', updatedTodos)
   },
   completedTodo: (id) => {
     const updatedTodos = get().todos.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo);
 
     set({ todos: updatedTodos });
-    localStorage.setItem('todos', JSON.stringify(updatedTodos));
+    addToLocalStorage('todos', updatedTodos)
   },
   updateTodo: (id, newTitle) => {
     const updatedTodos = get().todos.map(todo => {
@@ -66,7 +67,8 @@ export const todoStore = create<ITodosState>((set, get) => ({
       return todo;
     });
 
-    localStorage.setItem('todos', JSON.stringify(updatedTodos));
+
+    addToLocalStorage('todos', updatedTodos)
     set({ todos: updatedTodos });
   }
 }));
