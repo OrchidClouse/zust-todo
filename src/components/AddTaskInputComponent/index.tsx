@@ -7,7 +7,6 @@ interface IAddTaskComponentProps {
 
 
 export const AddTaskComponent: React.FC<IAddTaskComponentProps> = ({addTask}) => {
-  
   const [inputValue, setInputValue] = useState('')
 
   const addNewTask = useCallback(() => {

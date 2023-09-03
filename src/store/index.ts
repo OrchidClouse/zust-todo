@@ -3,7 +3,7 @@ import { create } from 'zustand';
 export interface ITodo {
   id: number;
   title: string;
-  completed?: boolean;
+  completed: boolean;
 }
 
 interface ITodosState {
@@ -34,7 +34,6 @@ export const todoStore = create<ITodosState>((set, get) => ({
   },
   fetchTodos: async () => {
     set({ isLoading: true });
-  
     const storedTodos = JSON.parse(localStorage.getItem('todos') || '[]');
   
     if (storedTodos.length > 0) {
@@ -44,11 +43,9 @@ export const todoStore = create<ITodosState>((set, get) => ({
   
     const response = await fetch('https://jsonplaceholder.typicode.com/todos');
     const todos = await response.json();
+
     localStorage.setItem('todos', JSON.stringify(todos));
-    
     set({ todos: todos, isLoading: false });
-    
-    return todos;
   },
   removeTodo: (id) => {
     const updatedTodos = get().todos.filter(todo => todo.id !== id);

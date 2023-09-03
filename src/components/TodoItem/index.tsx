@@ -12,21 +12,12 @@ export const TodoItem: React.FC<ITodoItemProps> = ({ todo}) => {
   const [editingTodo, setEditingTodo] = useState<null | number>(null);
 
 
-  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const form = e.currentTarget.form;
-      if (form) {
-        const index = Array.prototype.indexOf.call(form, e.currentTarget);
-        const nextElement = form.elements[index + 1] as HTMLInputElement;
-        if (nextElement) {
-          nextElement.focus();
-        }
-      }
+	const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key !== "Enter") return;
 
-      e.preventDefault();
-      setEditingTodo(null);
-    }
-  };
+		e.preventDefault();
+		setEditingTodo(null);
+	};
 
   return (
 	<>
